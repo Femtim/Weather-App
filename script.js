@@ -23,6 +23,8 @@ geoBtn.addEventListener('click', function () {
 });
 
 function getWeatherByCity(city) {
+   weatherResult.innerHTML = `<div class="text-gray-500">Loading...</div>`;
+  forecastDiv.innerHTML = '';
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`)
     .then(res => res.json())
     .then(data => {
@@ -66,22 +68,25 @@ function getForecast(lat, lon) {
   fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
     .then(res => res.json())
     .then(data => {
-      // Group by day, pick the forecast at 12:00 each day
       const days = {};
       data.list.forEach(item => {
         const date = item.dt_txt.split(' ')[0];
-        if (item.dt_txt.includes('12:00:00')) days[date] = item;
+        const hour = new Date(item.dt_txt).getHours();
+        // Keep the entry closest to 12:00 for each date
+        if (!days[date] || Math.abs(hour - 12) < Math.abs(new Date(days[date].dt_txt).getHours() - 12)) {
+          days[date] = item;
+        }
       });
       let html = `
         <div class="text-xl underline font-bold text-blue-800 mb-2 text-left">5-Days Forecast</div>
-        <div class="flex gap-2 mt-2">
+        <div class="flex gap-2 mt-2 overflow-x-auto">
       `;
       Object.values(days).slice(0, 5).forEach(day => {
         html += `
-          <div class="flex-1">
+          <div class="min-w-[120px]"">
             <div class="flex-1 bg-[linear-gradient(to_top,_#6600ff_5%,_#9966ff_100%)] rounded-lg p-3 text-center shadow text-white">
-              <div class="font-semibold text-blue-800">${new Date(day.dt_txt).toLocaleDateString(undefined, { weekday: 'short' })}</div>
-              <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}.png" alt="" class="mx-auto" width="40">
+              <div class="font-semibold text-white">${new Date(day.dt_txt).toLocaleDateString(undefined, { weekday: 'short' })}</div>
+              <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" class="m-auto" width="60">
               <div class="font-bold text-xl text-white">${day.main.temp}°C</div>
               <div class="text-sm text-white">${day.weather[0].main}</div>
               <div class="text-sm text-gray-200">Wind: ${day.wind.speed} m/s</div>
