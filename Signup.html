@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="">
+    <div class="flex flex-col justify-center items-center h-screen w-full">
+        <div class="text-center mb-10 mt-[30px]">
+            <h2 class="text-[48px] font-bold text-black">Welcome</h2>
+            <p class="text-gray-500 text-[18px]">
+                Sign up or log in to access your account
+            </p>
+        </div>
+
+        <form class="bg-white shadow-lg w-[30%] rounded-lg p-4 h-[600px]">
+            <div class="mb-4">
+                <h1 class="text-xl font-bold">Create an account</h1>
+                <p class="text-gray-400 mt-3">
+                    Enter your information to create a new account
+                </p>
+            </div>
+            <div class="flex flex-col mb-4 gap-3">
+                <label for="full_name" class="font-medium">Full Name</label>
+                <input type="text" class="border rounded px-3 py-2 w-full" placeholder="Full Name" required
+                    class="border border-gray-400 outline-none focus:ring-1 focus-ring-black px-3 py-2 rounded-md"
+                    id="full_name" />
+            </div>
+            <div class="flex flex-col mb-4 gap-3">
+                <label for="email" class="font-medium">Email</label>
+                <input type="email" class="border rounded px-3 py-2 w-full" placeholder="Email" required
+                    class="border border-gray-400 outline-none focus:ring-1 focus-ring-black px-3 py-2 rounded-md"
+                    id="email" />
+            </div>
+            <div class="relative">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="border rounded px-3 py-2 w-full" placeholder="Password" />
+                <span id="togglePassword"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer select-none  pt-[20px]">
+                    <!-- Eye SVG (visible by default) -->
+                    <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <!-- Eye-off SVG (hidden by default) -->
+                    <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 hidden"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95M6.634 6.634A9.956 9.956 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.956 9.956 0 01-4.293 5.95M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
+                    </svg>
+                </span>
+            </div>
+            <div class="flex flex-col mb-4 gap-3">
+                <label for="location" class="font-medium">Location</label>
+                <input type="text" class="border rounded px-3 py-2 w-full" placeholder="Location" required
+                    class="border border-gray-400 outline-none focus:ring-1 focus-ring-black px-3 py-2 rounded-md"
+                    id="location" />
+            </div>
+
+            <button type="submit" class="bg-blue-700 w-full py-2 px-6 font-[18px] text-white rounded-lg mt-[3rem]"
+                id="signup_button">
+                Signup
+            </button>
+
+            <p class="text-gray-500 text-center mt-10">
+                Already have an account
+                <a href="Login.html" class="text-blue-700 font-medium underline cursor-pointer">Login</a>
+            </p>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
