@@ -33,6 +33,13 @@ function generateAccountNumber() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  if (
+    window.location.pathname.toLowerCase().includes('index.html') &&
+    !sessionStorage.getItem('loggedInUser')
+  ) {
+    window.location.href = 'Login.html';
+    return;
+  }
   // Get user from local storage
   const user = getUser();
 
