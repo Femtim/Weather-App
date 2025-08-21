@@ -4,43 +4,44 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Sign Up</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="">
-    <div class="flex flex-col justify-center items-center h-screen w-full">
-        <div class="text-center mb-10 mt-[30px]">
-            <h2 class="text-[48px] font-bold text-black">Welcome</h2>
-            <p class="text-gray-500 text-[18px]">
+<body class="bg-gray-50">
+    <div class="flex flex-col justify-center items-center min-h-screen w-full px-2">
+        <div class="text-center mb-8 mt-8">
+            <h2 class="text-3xl sm:text-4xl md:text-[48px] font-bold text-black">Welcome</h2>
+            <p class="text-gray-500 text-base sm:text-lg md:text-[18px]">
                 Sign up or log in to access your account
             </p>
         </div>
 
-        <form class="bg-white shadow-lg w-[30%] rounded-lg p-4 h-[600px]">
+        <form
+            class="bg-white shadow-lg w-full max-w-md sm:max-w-lg md:max-w-xl rounded-lg p-4 sm:p-6 md:p-8 min-h-[500px] flex flex-col justify-center"
+            autocomplete="off">
             <div class="mb-4">
-                <h1 class="text-xl font-bold">Create an account</h1>
-                <p class="text-gray-400 mt-3">
+                <h1 class="text-lg sm:text-xl md:text-2xl font-bold">Create an account</h1>
+                <p class="text-gray-400 mt-2 sm:mt-3 text-sm sm:text-base">
                     Enter your information to create a new account
                 </p>
             </div>
-            <div class="flex flex-col mb-4 gap-3">
-                <label for="full_name" class="font-medium">Full Name</label>
-                <input type="text" class="border rounded px-3 py-2 w-full" placeholder="Full Name" required
-                    class="border border-gray-400 outline-none focus:ring-1 focus-ring-black px-3 py-2 rounded-md"
-                    id="full_name" />
+            <div class="flex flex-col mb-4 gap-2 sm:gap-3">
+                <label for="full_name" class="font-medium text-sm sm:text-base">Full Name</label>
+                <input type="text" class="border rounded px-3 py-2 w-full text-sm sm:text-base" placeholder="Full Name"
+                    required id="full_name" />
             </div>
-            <div class="flex flex-col mb-4 gap-3">
-                <label for="email" class="font-medium">Email</label>
-                <input type="email" class="border rounded px-3 py-2 w-full" placeholder="Email" required
-                    class="border border-gray-400 outline-none focus:ring-1 focus-ring-black px-3 py-2 rounded-md"
-                    id="email" />
+            <div class="flex flex-col mb-4 gap-2 sm:gap-3">
+                <label for="email" class="font-medium text-sm sm:text-base">Email</label>
+                <input type="email" class="border rounded px-3 py-2 w-full text-sm sm:text-base" placeholder="Email"
+                    required id="email" />
             </div>
-            <div class="relative">
-                <label for="password">Password</label>
-                <input type="password" id="password" class="border rounded px-3 py-2 w-full" placeholder="Password" />
+            <div class="relative mb-4">
+                <label for="password" class="font-medium text-sm sm:text-base">Password</label>
+                <input type="password" id="password" class="border rounded px-3 py-2 w-full text-sm sm:text-base"
+                    placeholder="Password" />
                 <span id="togglePassword"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer select-none  pt-[20px]">
+                    class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer select-none pt-[20px]">
                     <!-- Eye SVG (visible by default) -->
                     <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
@@ -58,21 +59,20 @@
                     </svg>
                 </span>
             </div>
-            <div class="flex flex-col mb-4 gap-3">
-                <label for="location" class="font-medium">Location</label>
-                <input type="text" class="border rounded px-3 py-2 w-full" placeholder="Location" required
-                    class="border border-gray-400 outline-none focus:ring-1 focus-ring-black px-3 py-2 rounded-md"
-                    id="location" />
+            <div class="flex flex-col mb-4 gap-2 sm:gap-3">
+                <label for="location" class="font-medium text-sm sm:text-base">Location</label>
+                <input type="text" class="border rounded px-3 py-2 w-full text-sm sm:text-base" placeholder="Location"
+                    required id="location" />
             </div>
 
-            <button type="submit" class="bg-blue-700 w-full py-2 px-6 font-[18px] text-white rounded-lg mt-[3rem]"
+            <button type="submit" class="bg-blue-700 w-full py-2 px-6 text-base sm:text-lg text-white rounded-lg mt-8"
                 id="signup_button">
                 Signup
             </button>
 
-            <p class="text-gray-500 text-center mt-10">
-                Already have an account
-                <a href="Login.html" class="text-blue-700 font-medium underline cursor-pointer">Login</a>
+            <p class="text-gray-500 text-center mt-8 text-sm sm:text-base">
+                Already have an account?
+                <a href="index.html" class="text-blue-700 font-medium underline cursor-pointer">Login</a>
             </p>
         </form>
     </div>
