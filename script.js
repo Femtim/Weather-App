@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       localStorage.setItem('loggedInUser', JSON.stringify(user));
       alert('Login successful!');
-      window.location.href = 'index.html';
+      window.location.href = 'dashboard.html';
     });
 
     loginEmail.value = '';
@@ -164,13 +164,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const geoBtn = document.getElementById('geoBtn');
   const apiKey = 'af37647eae60c74c42c6df82cb20ecd6';
 
+  const path = window.location.pathname.toLowerCase();
   if (
-    window.location.pathname.toLowerCase().includes('index.html') &&
+    (path === '/' || path.endsWith('dashboard.html')) &&
     !localStorage.getItem('loggedInUser')
   ) {
-    window.location.href = 'Login.html';
-    return;
+    window.location.href = '/Login.html'; // absolute path for Vercel
   }
+
 
   const userDisplay = document.getElementById('userDisplay');
   if (loggedInUser && userDisplay) {
@@ -277,19 +278,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Logout
-if (logOut) {
-  logOut.addEventListener('click', (ev) => {
-    ev.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
+  const logOut = document.querySelector('#logout');
 
-    // Clear session
-    localStorage.removeItem('loggedInUser');
+  if (logOut) {
+    logOut.addEventListener('click', (ev) => {
+      ev.preventDefault();
 
-    alert('You have been logged out.');
+      // Clear session
+      sessionStorage.removeItem('loggedInUser');
 
-    // Redirect to login
-    window.location.href = 'Login.html'; 
-  });
-}
+      alert('You have been logged out.');
+
+      // Redirect to login
+      window.location.href = 'Login.html';
+    });
+  }
+});
+
 
 
 
