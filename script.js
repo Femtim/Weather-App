@@ -196,11 +196,15 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(res => res.json())
       .then(data => {
         const days = {};
+        const today = new Date().toISOString().split('T')[0];
         data.list.forEach(item => {
           const date = item.dt_txt.split(' ')[0];
           const hour = new Date(item.dt_txt).getHours();
-          if (!days[date] || Math.abs(hour - 12) < Math.abs(new Date(days[date].dt_txt).getHours() - 12)) {
-            days[date] = item;
+          // Only add days after today
+          if (date > today) {
+            if (!days[date] || Math.abs(hour - 12) < Math.abs(new Date(days[date].dt_txt).getHours() - 12)) {
+              days[date] = item;
+            }
           }
         });
         let html = `<div class="text-lg sm:text-xl underline font-bold text-blue-800 mb-2 text-left">5-Days Forecast</div>
