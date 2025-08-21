@@ -279,19 +279,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Logout
 document.addEventListener('DOMContentLoaded', () => {
-  const logOut = document.querySelector('#logout');
 
-  if (logOut) {
-    logOut.addEventListener('click', (ev) => {
-      ev.preventDefault();
-
-      // Clear session
-      localStorage.removeItem('loggedInUser');
-
-      alert('You have been logged out.');
-
-      // Redirect to login
-      window.location.href = 'index.html';
+  const logoutBtn = document.getElementById('logout');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (confirm('Are you sure you want to logout?')) {
+        sessionStorage.removeItem('loggedInUser');
+        window.location.href = 'index.html';
+      }
     });
   }
 });
