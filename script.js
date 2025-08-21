@@ -164,12 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const geoBtn = document.getElementById('geoBtn');
   const apiKey = 'af37647eae60c74c42c6df82cb20ecd6';
 
-  const path = window.location.pathname.toLowerCase();
   if (
-    (path === '/' || path.endsWith('dashboard.html')) &&
-    !localStorage.getItem('loggedInUser')
+    window.location.pathname.toLowerCase().includes('dashboard.html') &&
+    !sessionStorage.getItem('loggedInUser')
   ) {
-    window.location.href = '/Login.html'; // absolute path for Vercel
+    window.location.href = 'Login.html';
+    return;
   }
 
 
