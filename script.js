@@ -22,24 +22,8 @@ async function hashPassword(password) {
   return hashHex;
 }
 
-// Generate a unique account number
-function generateAccountNumber() {
-  const users = getUser();
-  let accountNumber;
-  do {
-    accountNumber = '3' + Math.floor(10000000 + Math.random() * 90000000);
-  } while (users.some((u) => u.accountNumber === accountNumber));
-  return accountNumber;
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  if (
-    window.location.pathname.toLowerCase().includes('index.html') &&
-    !sessionStorage.getItem('loggedInUser')
-  ) {
-    window.location.href = 'Login.html';
-    return;
-  }
+
   // Get user from local storage
   const user = getUser();
 
@@ -111,8 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Hash the password
       const hashedPassword = await hashPassword(password.value);
       const newUser = {
-        id: crypto.randomUUID(), // Generate a unique ID for the user
-        accountNumber: generateAccountNumber(), // Generate a unique account number
+        id: crypto.randomUUID(), // Generate a unique ID for the user Generate a unique account number
         fullName: fullName.value,
         email: email.value,
         password: hashedPassword,
@@ -161,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
       alert('Login successful!');
       window.location.href = 'index.html';
     });
@@ -170,16 +153,24 @@ document.addEventListener('DOMContentLoaded', () => {
     loginPassword.value = '';
   }
 
- 
+
 
   // Weather Dashboard Logic
-  const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+  const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
   const weatherForm = document.getElementById('weatherForm');
   const cityInput = document.getElementById('cityInput');
   const weatherResult = document.getElementById('weatherResult');
   const forecastDiv = document.getElementById('forecast');
   const geoBtn = document.getElementById('geoBtn');
   const apiKey = 'af37647eae60c74c42c6df82cb20ecd6';
+
+  if (
+    window.location.pathname.toLowerCase().includes('index.html') &&
+    !localStorage.getItem('loggedInUser')
+  ) {
+    window.location.href = 'Login.html';
+    return;
+  }
 
   const userDisplay = document.getElementById('userDisplay');
   if (loggedInUser && userDisplay) {
@@ -287,10 +278,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Logout
 if (logOut) {
-  logOut.addEventListener('click', () => {
-    sessionStorage.removeItem('loggedInUser');
-    window.location.href = 'login.html';
-    alert('You are successfully logout');
+  logOut.addEventListener('click', (ev) => {
+    ev.preventDefault();
+
+    // Clear session
+    localStorage.removeItem('loggedInUser');
+
+    alert('You have been logged out.');
+
+    // Redirect to login
+    window.location.href = 'Login.html'; 
   });
 }
 
