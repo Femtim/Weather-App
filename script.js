@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     logoutBtn.addEventListener('click', (e) => {
       e.preventDefault();
       if (confirm('Are you sure you want to logout?')) {
-        sessionStorage.removeItem('loggedInUser');
+        localStorage.removeItem('loggedInUser');
         window.location.href = 'index.html';
       }
     });
