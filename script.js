@@ -135,43 +135,42 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Login logic
+
   if (loginBtn) {
     loginBtn.addEventListener('click', async (ev) => {
-      console.log(user);
-      // Prevent the default form submission
       ev.preventDefault();
+      const emailValue = loginEmail.value.trim();
+      const passwordValue = loginPassword.value;
 
-      // Validate the input fields
-      if (!loginEmail.value || !loginPassword.value) {
-        alert('Please fill in all fields.');
+      if (!emailValue || !passwordValue) {
+        alert('Please fill all fields.');
         return;
       }
 
-      // Check if the user exists
-      const hashedPassword = await hashPassword(loginPassword.value);
-      const matchedUser = user.find(
-        (u) => u.email === loginEmail.value && u.password === hashedPassword
-      );
+      const users = getUser();
+      const hashedPassword = await hashPassword(passwordValue);
+      const user = users.find(u => u.email === emailValue);
 
-      if (!hashedPassword) {
-        alert('incorrect password');
+      if (!user) {
+        alert('User not found.');
         return;
       }
 
-      if (matchedUser) {
-        sessionStorage.setItem('loggedInUser', JSON.stringify(matchedUser));
-        alert('Login successful!');
-        window.location.href = 'index.html'; // Redirect to dashboard after successful login
-      } else {
-        alert('Error User not Found! ');
-        window.location.href = 'Signup.html';
+      if (user.password !== hashedPassword) {
+        alert('Incorrect password.');
+        return;
       }
+
+      sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+      alert('Login successful!');
+      window.location.href = 'index.html';
     });
 
     loginEmail.value = '';
     loginPassword.value = '';
-
   }
+
+ 
 
   // Weather Dashboard Logic
   const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
