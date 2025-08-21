@@ -1,33 +1,21 @@
-// get user from local storage
-function getUser() {
+// Utility functions for local storage
+function getUsers() {
   return JSON.parse(localStorage.getItem('user')) || [];
 }
-
-// set user to local storage
-function setUser(user) {
-  return localStorage.setItem('user', JSON.stringify(user));
-  //   return user;
+function setUsers(users) {
+  localStorage.setItem('user', JSON.stringify(users));
 }
 
 // Hash password using SHA-256
-// This function uses the SubtleCrypto API to hash the password securely.
 async function hashPassword(password) {
   const encoder = new TextEncoder();
   const data = encoder.encode(password);
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray
-    .map((byte) => byte.toString(16).padStart(2, '0'))
-    .join('');
-  return hashHex;
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-
-  // Get user from local storage
-  const user = getUser();
-
-  //password feasibility
+  // Password toggle logic
   const passwordInput = document.getElementById('password');
   const passwordInput2 = document.getElementById('login_password');
   const togglePassword = document.getElementById('togglePassword');
@@ -38,64 +26,48 @@ document.addEventListener('DOMContentLoaded', () => {
     togglePassword.addEventListener('click', () => {
       [passwordInput, passwordInput2].forEach(input => {
         if (input) {
-          const isPassword = input.type === 'password';
-          input.type = isPassword ? 'text' : 'password';
+          input.type = input.type === 'password' ? 'text' : 'password';
         }
       });
-      // Toggle icon visibility
       const isPassword = passwordInput?.type === 'password';
       eyeOpen?.classList.toggle('hidden', !isPassword);
       eyeClosed?.classList.toggle('hidden', isPassword);
     });
   }
 
-
-
-  // Signup Inputs
-  const fullName = document.querySelector('#full_name');
-  const email = document.querySelector('#email');
-  const password = document.querySelector('#password');
-  const signUpBtn = document.querySelector('#signup_button');
-  const location = document.querySelector('#location');
-
-  // Login Inputs
-  const loginEmail = document.querySelector('#login_email');
-  const loginPassword = document.querySelector('#login_password');
-  const loginBtn = document.querySelector('#login_button');
-
-  // Logout
-  const logOut = document.querySelector('#logout');
+  // Signup logic
+  const fullName = document.getElementById('full_name');
+  const email = document.getElementById('email');
+  const password = document.getElementById('password');
+  const signUpBtn = document.getElementById('signup_button');
+  const location = document.getElementById('location');
 
   if (signUpBtn) {
-    async function signUpBtnClickHandler(ev) {
+    signUpBtn.addEventListener('click', async (ev) => {
       ev.preventDefault();
+      const users = getUsers();
 
-      if (!fullName.value || !email.value || !password.value) {
+      if (!fullName.value || !email.value || !password.value || !location.value) {
         alert('Please fill in all fields.');
         return;
       }
-
       if (!email.value.includes('@')) {
         alert('Please enter a valid email address.');
         return;
       }
-
-      // Check if the user already exists
-      if (user && user.some((u) => u.email === email.value)) {
-        alert('User already exists exist.');
-        window.location.href = 'Login.html';
+      if (users.some(u => u.email === email.value)) {
+        alert('User already exists.');
+        window.location.href = 'index.html';
         return;
       }
-      // Check if password is less than 6 characters
       if (password.value.length < 6) {
         alert('Password must be at least 6 characters long.');
         return;
       }
 
-      // Hash the password
       const hashedPassword = await hashPassword(password.value);
       const newUser = {
-        id: crypto.randomUUID(), // Generate a unique ID for the user Generate a unique account number
+        id: crypto.randomUUID(),
         fullName: fullName.value,
         email: email.value,
         password: hashedPassword,
@@ -103,21 +75,22 @@ document.addEventListener('DOMContentLoaded', () => {
         createdAt: new Date().toISOString(),
       };
 
-      user.push(newUser); // Add the new user to the user array
-      setUser(user);
+      users.push(newUser);
+      setUsers(users);
       alert('User registered successfully!');
-      window.location.href = 'index.html'; // Redirect to login page after successful registration
-    }
+      window.location.href = 'index.html';
+    });
 
-    signUpBtn.addEventListener('click', signUpBtnClickHandler);
     fullName.value = '';
     email.value = '';
     password.value = '';
     location.value = '';
-
   }
 
   // Login logic
+  const loginEmail = document.getElementById('login_email');
+  const loginPassword = document.getElementById('login_password');
+  const loginBtn = document.getElementById('login_button');
 
   if (loginBtn) {
     loginBtn.addEventListener('click', async (ev) => {
@@ -130,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const users = getUser();
+      const users = getUsers();
       const hashedPassword = await hashPassword(passwordValue);
       const user = users.find(u => u.email === emailValue);
 
@@ -138,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('User not found.');
         return;
       }
-
       if (user.password !== hashedPassword) {
         alert('Incorrect password.');
         return;
@@ -153,7 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
     loginPassword.value = '';
   }
 
-
+  // Auth redirect for dashboard
+  const path = window.location.pathname.toLowerCase();
+  if (
+    (path === '/' || path.endsWith('dashboard.html')) &&
+    !localStorage.getItem('loggedInUser')
+  ) {
+    window.location.href = '/index.html';
+  }
 
   // Weather Dashboard Logic
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
@@ -163,15 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const forecastDiv = document.getElementById('forecast');
   const geoBtn = document.getElementById('geoBtn');
   const apiKey = 'af37647eae60c74c42c6df82cb20ecd6';
-
-  const path = window.location.pathname.toLowerCase();
-  if (
-    (path === '/' || path.endsWith('dashboard.html')) &&
-    !localStorage.getItem('loggedInUser')
-  ) {
-    window.location.href = '/index.html'; // absolute path for Vercel
-  }
-
 
   const userDisplay = document.getElementById('userDisplay');
   if (loggedInUser && userDisplay) {
@@ -247,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getWeatherByCoords(lat, lon) {
+    weatherResult.innerHTML = `<div class="text-gray-500">Loading...</div>`;
+    forecastDiv.innerHTML = '';
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
       .then(res => res.json())
       .then(data => {
@@ -268,22 +240,23 @@ document.addEventListener('DOMContentLoaded', () => {
       getWeatherByCity(cityInput.value.trim());
     });
 
-    geoBtn.addEventListener('click', function () {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          pos => getWeatherByCoords(pos.coords.latitude, pos.coords.longitude),
-          err => alert('Could not get location')
-        );
-      } else {
-        alert('Geolocation not supported');
-      }
-    });
+    if (geoBtn) {
+      geoBtn.addEventListener('click', function () {
+        weatherResult.innerHTML = '<div class="text-gray-500">Getting your location...</div>';
+        forecastDiv.innerHTML = '';
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            pos => getWeatherByCoords(pos.coords.latitude, pos.coords.longitude),
+            err => weatherResult.innerHTML = `<span class="text-red-600">Could not get location: ${err.message}</span>`
+          );
+        } else {
+          weatherResult.innerHTML = '<span class="text-red-600">Geolocation not supported</span>';
+        }
+      });
+    }
   }
-});
 
-// Logout
-document.addEventListener('DOMContentLoaded', () => {
-
+  // Logout logic
   const logoutBtn = document.getElementById('logout');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', (e) => {
@@ -295,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
 
 
 
