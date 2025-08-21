@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
       user.push(newUser); // Add the new user to the user array
       setUser(user);
       alert('User registered successfully!');
-      window.location.href = 'Login.html'; // Redirect to login page after successful registration
+      window.location.href = 'index.html'; // Redirect to login page after successful registration
     }
 
     signUpBtn.addEventListener('click', signUpBtnClickHandler);
@@ -164,12 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const geoBtn = document.getElementById('geoBtn');
   const apiKey = 'af37647eae60c74c42c6df82cb20ecd6';
 
+  const path = window.location.pathname.toLowerCase();
   if (
-    window.location.pathname.toLowerCase().includes('dashboard.html') &&
-    !sessionStorage.getItem('loggedInUser')
+    (path === '/' || path.endsWith('dashboard.html')) &&
+    !localStorage.getItem('loggedInUser')
   ) {
-    window.location.href = 'Login.html';
-    return;
+    window.location.href = '/index.html'; // absolute path for Vercel
   }
 
 
@@ -286,12 +286,12 @@ document.addEventListener('DOMContentLoaded', () => {
       ev.preventDefault();
 
       // Clear session
-      sessionStorage.removeItem('loggedInUser');
+      localStorage.removeItem('loggedInUser');
 
       alert('You have been logged out.');
 
       // Redirect to login
-      window.location.href = 'Login.html';
+      window.location.href = 'index.html';
     });
   }
 });
