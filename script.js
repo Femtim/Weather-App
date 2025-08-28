@@ -147,6 +147,18 @@ document.addEventListener('DOMContentLoaded', () => {
   if (loggedInUser && userDisplay) {
     userDisplay.textContent = `Welcome, ${loggedInUser.fullName}`;
   }
+  // Greeting logic
+  function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  }
+
+  const greetingEl = document.getElementById('greeting');
+  if (greetingEl) {
+    greetingEl.textContent = getGreeting();
+  }
 
   function showWeather(data) {
     const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
